@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\AlbumController;
+use Core\Gallery\Gallery;
+use Core\Interfaces\AlbumReboInterface;
+use Core\Repositories\AlbumRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +17,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->when(Gallery::class)
+          ->needs(AlbumReboInterface::class)
+          ->give(function () {
+              return new AlbumRepository();
+          });
     }
 
     /**
